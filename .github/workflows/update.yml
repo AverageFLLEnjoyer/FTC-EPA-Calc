@@ -1,0 +1,64 @@
+name: Update site
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Restore TOA cache
+        uses: actions/cache/restore@v4
+        with:
+          path: cache
+          key: toa-cache-${{ github.run_id }}
+          restore-keys: toa-cache-
+
+      - name: Build site
+        env:
+          TOA_KEY: ${{ secrets.TOA_KEY }}
+          SEASONS: ${{ vars.SEASONS || '2627' }}
+          TOA_RPS: ${{ vars.TOA_RPS || '3' }}
+        run: node export.js
+
+      - name: Save TOA cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: cache
+          key: toa-cache-${{ github.run_id }}
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
