@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FTC EPA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#/"><span class="mark">EPA</span><span class="brand-t">FTC</span></a>
+    <nav class="nav" id="nav">
+      <a href="#/" data-r="rank">Teams</a>
+      <a href="#/events" data-r="events">Events</a>
+      <a href="#/about" data-r="about">Model</a>
+    </nav>
+    <div class="tools">
+      <label class="sr" for="season">Season</label>
+      <select id="season" aria-label="Season"></select>
+      <form id="jump" autocomplete="off"><label class="sr" for="jumpq">Team number</label>
+        <input id="jumpq" inputmode="numeric" placeholder="Team #" pattern="[0-9]*"></form>
+    </div>
+  </div>
+  <div id="banner" class="banner" hidden></div>
+</header>
+<main id="app" class="wrap"></main>
+<footer class="wrap foot">
+  Data from <a href="https://theorangealliance.org" target="_blank" rel="noopener">The Orange Alliance</a>.
+  EPA model adapted from <a href="https://www.statbotics.io/blog/epa" target="_blank" rel="noopener">Statbotics</a>. Not affiliated with FIRST. <span id="updated"></span>
+</footer>
+<script src="static-api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
